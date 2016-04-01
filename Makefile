@@ -1,4 +1,8 @@
 HALIDE_ROOT=$(error Set your Halide path)
+#Macbook: /Users/b/Documents/src/MIT/halide/halide_src
+#Salike: /afs/csail.mit.edu/u/b/baghdadi/src/MIT/halide/halide_src
+#Cori:
+
 OPENCV_LIBS=-lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_videoio
 
 HOST=$(shell hostname -s)

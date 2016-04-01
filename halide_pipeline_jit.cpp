@@ -224,7 +224,6 @@ int main(int argc, char **argv) {
 
     Target target = get_jit_target_from_environment();
     if (schedule == GPU) {
-        printf("Scheduling for GPU.\n");
         target.set_feature(Target::OpenCL);
         blurz.compute_root().reorder(c, z, x, y).gpu_tile(x, y, 8, 8);
         histogram.reorder(c, z, x, y).compute_at(blurz, Var::gpu_blocks()).gpu_threads(x, y);
@@ -236,7 +235,6 @@ int main(int argc, char **argv) {
         sobelx.compute_at(sobel, Var::gpu_blocks()).gpu_threads(x, y);
         sobely.compute_at(sobel, Var::gpu_blocks()).gpu_threads(x, y);
     } else if (schedule == CPU) {
-        printf("Scheduling for CPU.\n");
         histogram.compute_at(blurz, y);
         histogram.update().reorder(c, r.x, r.y, x, y).unroll(c);
         blurz.compute_root().reorder(c, z, x, y).parallel(y).vectorize(x, 4).unroll(c);
@@ -274,7 +272,6 @@ int main(int argc, char **argv) {
     //make_input_image(input);
 
     // Realize once to compile and warm up.
-    if (schedule == GPU ) {printf("Copying data to GPU...\n"); fflush(stdout);}
     sobel.realize(output, target);
 
     // Run pipeline 3 times and take the best time
@@ -298,6 +295,7 @@ int main(int argc, char **argv) {
     const double gigapixelsPerSec = (input.global_width() * input.global_height()) / (maxElapsed * 1e9);
     const double gflopsPerSec = (input.global_width() * input.global_height() * flops_per_pixel) / (maxElapsed * 1e9);
     if (rank == 0) {
+	printf("\n%-20s \n\n", "Image processed.");
         printf("%d MPI ranks.\n", numranks);
         printf("%-20s %.3f seconds\n", "Elapsed:", maxElapsed);
 //        printf("%-20s %f MB/sec\n", "Agg. Throughput:", megabytesPerSec);
@@ -310,6 +308,7 @@ int main(int argc, char **argv) {
     const double gflops = flops / 1e9;
 //    const double megabytesPerSec = (w * h * sizeof(float)) / (sec * 1e6);
     const double gigapixelsPerSec = (w * h) / (sec * 1e9);
+    printf("\n%-20s \n\n", "Image processed.");
     printf("%-20s %.3f seconds\n", "Elapsed:", sec);
 //    printf("%-20s %.3f MB/sec\n", "Throughput:", megabytesPerSec);
     printf("%-20s %.3f GP/sec\n", "Throughput:", gigapixelsPerSec);

@@ -36,7 +36,7 @@ cpu: halide_pipeline_jit.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@ -O3 -ffast-math -Wall -I $(HALIDE_ROOT)/include $(HALIDE_ROOT)/lib/libHalide.a -lpthread -ldl -lz $(LDFLAGS) -DDEMO_CPU
 
 gpu: halide_pipeline_jit.cpp
-	$(CXX) $(CXXFLAGS) $< -o $@ -O3 -ffast-math -Wall -I $(HALIDE_ROOT)/include $(HALIDE_ROOT)/lib/libHalide.a -lpthread -ldl -lz $(LDFLAGS) $(CUDA_LDFLAGS) $(OPENCL_LDFLAGS) $(OPENGL_LDFLAGS) -DDEMO_GPU
+	$(CXX) $(CXXFLAGS) $< -o $@ -O3 -ffast-math -Wall -I $(HALIDE_ROOT)/include $(HALIDE_ROOT)/lib/libHalide.a -lpthread -ldl -lz $(LDFLAGS) -DDEMO_GPU
 
 
 clean:

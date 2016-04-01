@@ -1,16 +1,39 @@
-HOME_DIR=/Users/b/Documents/
-HALIDE_PATH=${HOME_DIR}/src/MIT/halide/halide_src/
-HALIDE_INC_PATH=${HALIDE_PATH}/include/
-HALIDE_LIB_PATH=${HALIDE_PATH}/lib/
-
+HALIDE_ROOT=$(error Set your Halide path)
 OPENCV_LIBS=-lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_videoio
-HALIDE_LIB=libHalide.a
 
-all:
-	g++ -std=c++11 halide_pipeline.cpp ${HALIDE_LIB_PATH}/${HALIDE_LIB} -I${HALIDE_INC_PATH} -I${HALIDE_INC_PATH}/tools/ -I${HALIDE_INC_PATH}/apps/support/ -ldl -lpthread -lz -L/opt/X11/lib -lpng15 -I/opt/X11/include/libpng15   -o halide_pipeline
-	./halide_pipeline
-	g++ -std=c++11 demo.cpp halide_pipeline.o ${HALIDE_LIB_PATH}/${HALIDE_LIB} ${OPENCV_LIBS} -I${HALIDE_INC_PATH} -I${HALIDE_INC_PATH}/tools/ -I${HALIDE_INC_PATH}/apps/support/  -msse2 -Wall -O3 -ldl -lpthread -lz -L/opt/X11/lib -lpng15 -I/opt/X11/include/libpng15   -o demo
+HOST=$(shell hostname -s)
+MPICXX=
+CXXFLAGS := -std=c++11 $(CXXFLAGS)
+
+ifneq (,$(findstring lanka,$(HOST)))
+	MPICXX=mpicxx
+endif
+ifneq (,$(findstring salike,$(HOST)))
+	MPICXX=mpicxx
+endif
+ifneq (,$(findstring cori,$(HOST)))
+	MPICXX=CC
+endif
+ifneq (,$(findstring edison,$(HOST)))
+	MPICXX=CC
+endif
+
+halide_pipeline_aot: halide_pipeline_aot.cpp
+	$(CXX) $(CXXFLAGS) halide_pipeline_aot.cpp $(HALIDE_ROOT)/lib/libHalide.a -I$(HALIDE_ROOT)/include -I$(HALIDE_ROOT)/include/tools/ -I$(HALIDE_ROOT)/include/apps/support/ -ldl -lpthread -lz -L/opt/X11/lib -lpng15 -I/opt/X11/include/libpng15   -o halide_pipeline_aot
+	./halide_pipeline_aot
+
+livedemo: livedemo.cpp halide_pipeline_aot
+	g++ -std=c++11 livedemo.cpp halide_pipeline_aot.o $(HALIDE_ROOT)/lib/libHalide.a $(OPENCV_LIBS) -I$(HALIDE_ROOT)/include -I$(HALIDE_ROOT)/include/tools/ -I$(HALIDE_ROOT)/include/apps/support/  -msse2 -Wall -O3 -ldl -lpthread -lz -L/opt/X11/lib -lpng15 -I/opt/X11/include/libpng15   -o livedemo
+
+distributed: halide_pipeline_jit.cpp
+	$(MPICXX) $(CXXFLAGS) $< -o $@ -O3 -ffast-math -Wall -I $(HALIDE_ROOT)/include $(HALIDE_ROOT)/bin/libHalide.a -lpthread -ldl -lz $(LDFLAGS) -DDEMO_DISTRIBUTED
+
+cpu: halide_pipeline_jit.cpp
+	$(CXX) $(CXXFLAGS) $< -o $@ -O3 -ffast-math -Wall -I $(HALIDE_ROOT)/include $(HALIDE_ROOT)/bin/libHalide.a -lpthread -ldl -lz $(LDFLAGS) -DDEMO_CPU
+
+gpu: halide_pipeline_jit.cpp
+	$(CXX) $(CXXFLAGS) $< -o $@ -O3 -ffast-math -Wall -I $(HALIDE_ROOT)/include $(HALIDE_ROOT)/bin/libHalide.a -lpthread -ldl -lz $(LDFLAGS) $(CUDA_LDFLAGS) $(OPENCL_LDFLAGS) $(OPENGL_LDFLAGS) -DDEMO_GPU
 
 
 clean:
-	rm -rf demo halide_pipeline.h halide_pipeline.o halide_pipeline *~
+	rm -rf livedemo halide_pipeline_aot.h halide_pipeline_aot.o halide_pipeline_aot distributed cpu gpu *~

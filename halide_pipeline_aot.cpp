@@ -1,13 +1,6 @@
 #include "Halide.h"
 using namespace Halide;
 
-#define CPU_SCHEDULE 1
-#define GPU_SCHEDULE 2
-#define DIST_SCHEDULE 3
-
-// Change this for a different schedule
-#define SCHEDULE CPU_SCHEDULE
-
 int main(int argc, char **argv) {
 
     ImageParam input(type_of<uint8_t>(), 2);
@@ -74,31 +67,19 @@ int main(int argc, char **argv) {
 
     Target target = get_target_from_environment();
 
-    if (SCHEDULE == CPU_SCHEDULE)
-    {
-      // The CPU schedule.
-      blurz.compute_root().reorder(c, z, x, y).parallel(y).vectorize(x, 8).unroll(c);
-      histogram.compute_at(blurz, y);
-      histogram.update().reorder(c, r.x, r.y, x, y).unroll(c);
-      blurx.compute_root().reorder(c, x, y, z).parallel(z).vectorize(x, 8).unroll(c);
-      blury.compute_root().reorder(c, x, y, z).parallel(z).vectorize(x, 8).unroll(c);
-      bilateral_grid.compute_root().parallel(y).vectorize(x, 8);
-      sobelx.vectorize(x, 8).compute_at(sobel, y);
-      sobely.vectorize(x, 8).compute_at(sobel, y);
-      sobel.parallel(y);
-    }
-    else if (SCHEDULE == GPU_SCHEDULE)
-    {
-
-
-    }
-    else if (SCHEDULE == DIST_SCHEDULE)
-    {
-
-    }
+    // The CPU schedule.
+    blurz.compute_root().reorder(c, z, x, y).parallel(y).vectorize(x, 8).unroll(c);
+    histogram.compute_at(blurz, y);
+    histogram.update().reorder(c, r.x, r.y, x, y).unroll(c);
+    blurx.compute_root().reorder(c, x, y, z).parallel(z).vectorize(x, 8).unroll(c);
+    blury.compute_root().reorder(c, x, y, z).parallel(z).vectorize(x, 8).unroll(c);
+    bilateral_grid.compute_root().parallel(y).vectorize(x, 8);
+    sobelx.vectorize(x, 8).compute_at(sobel, y);
+    sobely.vectorize(x, 8).compute_at(sobel, y);
+    sobel.parallel(y);
 
     std::vector<Argument> args = {input, rows, cols};
-    sobel.compile_to_file("halide_pipeline", args);
+    sobel.compile_to_file("halide_pipeline_aot", args);
 
     return 0;
 }

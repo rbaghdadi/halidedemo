@@ -25,7 +25,7 @@ int main(int, char**)
     namedWindow("Edge Detection - Halide Image Processing DSL");
     std::string text2;
 
-#ifdef USE_PAPI   
+#ifdef USE_PAPI
     float rtime, ptime;
     long long flpops;
     float mflops;
@@ -52,16 +52,16 @@ int main(int, char**)
 	input_buf.min[1] = output_buf.min[1] = 0;
 	input_buf.elem_size = output_buf.elem_size = 1;
 
-#ifdef USE_PAPI	
+#ifdef USE_PAPI
 	PAPI_start_counters();
-	halide_pipeline(&input_buf, frame.rows, frame.cols, &output_buf);
+	halide_pipeline_aot(&input_buf, frame.rows, frame.cols, &output_buf);
 	PAPI_stop_counters();
 	PAPI_flops(&rtime, &ptime, &flpops, &mflops);
 #else
 	clock_t begin = clock();
-	halide_pipeline(&input_buf, frame.rows, frame.cols, &output_buf);
+	halide_pipeline_aot(&input_buf, frame.rows, frame.cols, &output_buf);
 	clock_t end = clock();
-#endif	
+#endif
 
 	int image_size = frame.cols*frame.rows;
 	//153*frame.rows*frame.cols+6
@@ -78,7 +78,7 @@ int main(int, char**)
 #else
 	if (counter==0 || counter%10==0) // Change the Flops each 100 iterations
 		text2 = "GFlops : " + std::to_string(flop_per_sec/1000000000);
-#endif	
+#endif
 	counter++;
 
 	cv::putText(edges, text1, cv::Point(30, 40), CV_FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255), 1, 8, false);
@@ -90,5 +90,3 @@ int main(int, char**)
     // the camera will be deinitialized automatically in VideoCapture destructor
     return 0;
 }
-
-

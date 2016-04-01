@@ -63,12 +63,9 @@ int main(int, char**)
 	clock_t end = clock();
 #endif	
 
-	int image_size = frame.cols*frame.rows;
-	//153*frame.rows*frame.cols+6
-	int num_floating_operations = 125*frame.rows*frame.cols;
-	double flop = image_size*num_floating_operations;
+	int num_floating_operations = 82*frame.rows*frame.cols;
 	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
-	double flop_per_sec = flop/elapsed_secs;
+	double flop_per_sec = num_floating_operations/elapsed_secs;
 
 	std::string text1 = "Halide Pipeline (Edge Detection)";
 

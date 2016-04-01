@@ -1,0 +1,3 @@
+- To compile the codes, you need to set the path to halide root directory.
+- The scripts ./demo_live.sh, ./demo_gpu.sh and ./demo_cori.sh should compile
+the codes and run the demo program with the appropriate input data.

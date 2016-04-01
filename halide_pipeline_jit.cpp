@@ -294,13 +294,13 @@ int main(int argc, char **argv) {
 #ifdef DEMO_DISTRIBUTED
     double maxElapsed = 0;
     MPI_Reduce(&sec, &maxElapsed, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
-    const double megabytesPerSec = (input.global_width() * input.global_height() * sizeof(float)) / (maxElapsed * 1e6);
+//    const double megabytesPerSec = (input.global_width() * input.global_height() * sizeof(float)) / (maxElapsed * 1e6);
     const double gigapixelsPerSec = (input.global_width() * input.global_height()) / (maxElapsed * 1e9);
     const double gflopsPerSec = (input.global_width() * input.global_height() * flops_per_pixel) / (maxElapsed * 1e9);
     if (rank == 0) {
         printf("%d MPI ranks.\n", numranks);
         printf("%-20s %.3f seconds\n", "Elapsed:", maxElapsed);
-        printf("%-20s %f MB/sec\n", "Agg. Throughput:", megabytesPerSec);
+//        printf("%-20s %f MB/sec\n", "Agg. Throughput:", megabytesPerSec);
         printf("%-20s %f GP/sec\n", "Agg. Throughput:", gigapixelsPerSec);
         printf("%-20s %.3f gflops/sec\n", "Agg. Throughput:", gflopsPerSec);
     }
@@ -308,10 +308,10 @@ int main(int argc, char **argv) {
 #else
     const long long flops = input.width() * input.height() * flops_per_pixel;
     const double gflops = flops / 1e9;
-    const double megabytesPerSec = (w * h * sizeof(float)) / (sec * 1e6);
+//    const double megabytesPerSec = (w * h * sizeof(float)) / (sec * 1e6);
     const double gigapixelsPerSec = (w * h) / (sec * 1e9);
     printf("%-20s %.3f seconds\n", "Elapsed:", sec);
-    printf("%-20s %.3f MB/sec\n", "Throughput:", megabytesPerSec);
+//    printf("%-20s %.3f MB/sec\n", "Throughput:", megabytesPerSec);
     printf("%-20s %.3f GP/sec\n", "Throughput:", gigapixelsPerSec);
     printf("%-20s %.3f gflops/sec\n", "Throughput:", gflops / sec);
 #endif

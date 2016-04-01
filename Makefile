@@ -1,4 +1,4 @@
-HOME_DIR=~/
+HOME_DIR=/Users/b/Documents/
 HALIDE_PATH=${HOME_DIR}/src/MIT/halide/halide_src/
 HALIDE_INC_PATH=${HALIDE_PATH}/include/
 HALIDE_LIB_PATH=${HALIDE_PATH}/lib/

@@ -2,7 +2,7 @@
 #include "opencv2/videoio.hpp"
 
 #include "Halide.h"
-#include "halide_pipeline.h"
+#include "halide_pipeline_aot.h"
 
 //#define USE_PAPI
 

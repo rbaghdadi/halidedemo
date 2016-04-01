@@ -306,7 +306,7 @@ int main(int argc, char **argv) {
     }
     MPI_Finalize();
 #else
-    const long flops = input.width() * input.height() * flops_per_pixel;
+    const long long flops = input.width() * input.height() * flops_per_pixel;
     const double gflops = flops / 1e9;
     const double megabytesPerSec = (w * h * sizeof(float)) / (sec * 1e6);
     const double gigapixelsPerSec = (w * h) / (sec * 1e9);

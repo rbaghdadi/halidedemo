@@ -22,7 +22,7 @@ halide_pipeline_aot: halide_pipeline_aot.cpp
 	$(CXX) $(CXXFLAGS) halide_pipeline_aot.cpp $(HALIDE_ROOT)/lib/libHalide.a -I$(HALIDE_ROOT)/include -I$(HALIDE_ROOT)/include/tools/ -I$(HALIDE_ROOT)/include/apps/support/ -ldl -lpthread -lz -L/opt/X11/lib -lpng15 -I/opt/X11/include/libpng15   -o halide_pipeline_aot
 	./halide_pipeline_aot
 
-livedemo: livedemo.cpp halide_pipeline_aot
+livedemo: halide_pipeline_aot livedemo.cpp
 	g++ -std=c++11 livedemo.cpp halide_pipeline_aot.o $(HALIDE_ROOT)/lib/libHalide.a $(OPENCV_LIBS) -I$(HALIDE_ROOT)/include -I$(HALIDE_ROOT)/include/tools/ -I$(HALIDE_ROOT)/include/apps/support/  -msse2 -Wall -O3 -ldl -lpthread -lz -L/opt/X11/lib -lpng15 -I/opt/X11/include/libpng15   -o livedemo
 
 distributed: halide_pipeline_jit.cpp

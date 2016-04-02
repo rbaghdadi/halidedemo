@@ -17,9 +17,11 @@ ifneq (,$(findstring salike,$(HOST)))
 endif
 ifneq (,$(findstring cori,$(HOST)))
 	MPICXX=CC
+	CXXFLAGS := $(CXXFLAGS) -dynamic
 endif
 ifneq (,$(findstring edison,$(HOST)))
 	MPICXX=CC
+	CXXFLAGS := $(CXXFLAGS) -dynamic
 endif
 
 livedemo: halide_pipeline_aot livedemo.cpp

@@ -286,7 +286,7 @@ int main(int argc, char **argv) {
     }
 
     // Empirically, this is a a decent approximation.
-    const int flops_per_pixel = 82;
+    const long long flops_per_pixel = 82;
 
 #ifdef DEMO_DISTRIBUTED
     double maxElapsed = 0;

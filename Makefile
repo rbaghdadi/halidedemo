@@ -40,6 +40,8 @@ video1: video_jit_1.cpp
 video2: video_jit_2.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@ -O3 -ffast-math -Wall -I $(HALIDE_ROOT)/include $(HALIDE_ROOT)/bin/libHalide.a -lpthread -ldl -lz $(LDFLAGS) $(CUDA_LDFLAGS) $(OPENCL_LDFLAGS) $(OPENGL_LDFLAGS)
 
+video3: video_jit_3.cpp
+	$(CXX) $(CXXFLAGS) $< -o $@ -O3 -ffast-math -Wall -I $(HALIDE_ROOT)/include $(HALIDE_ROOT)/bin/libHalide.a -lpthread -ldl -lz $(LDFLAGS) $(CUDA_LDFLAGS) $(OPENCL_LDFLAGS) $(OPENGL_LDFLAGS)
 
 clean:
-	rm -rf livedemo halide_pipeline_aot.h halide_pipeline_aot.o halide_pipeline_aot distributed cpu gpu video1 video2 *~
+	rm -rf livedemo halide_pipeline_aot.h halide_pipeline_aot.o halide_pipeline_aot distributed cpu gpu video1 video2 video3 *~

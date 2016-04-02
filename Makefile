@@ -32,7 +32,7 @@ halide_pipeline_aot: halide_pipeline_aot.cpp
 	./halide_pipeline_aot
 
 distributed: halide_pipeline_jit.cpp
-	$(MPICXX) $(CXXFLAGS) $< -o $@ -O3 -ffast-math -Wall -I $(HALIDE_ROOT)/include $(HALIDE_ROOT)/lib/libHalide.a -lpthread -ldl -lz $(LDFLAGS) -DDEMO_DISTRIBUTED
+	$(MPICXX) $(CXXFLAGS) $< -o $@ -O3 -ffast-math -Wall -I $(HALIDE_ROOT)/include $(HALIDE_ROOT)/bin/libHalide.a -lpthread -ldl -lz $(LDFLAGS) -DDEMO_DISTRIBUTED
 
 cpu: halide_pipeline_jit.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@ -O3 -ffast-math -Wall -I $(HALIDE_ROOT)/include $(HALIDE_ROOT)/lib/libHalide.a -lpthread -ldl -lz $(LDFLAGS) -DDEMO_CPU

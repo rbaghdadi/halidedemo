@@ -92,31 +92,6 @@ void make_row(ImTy &input, int y) {
         input(x, y) = WHITE;
     }
 }
-
-void make_input_image(ImTy &input) {
-    int row = 0;
-    for (row = 0; row < square_padding; row++) {
-        make_padding_row(input, row);
-    }
-
-    for (int i = 0; i < nsquares; i++) {
-        int end_row = row + square_size;
-        // Make content rows
-        for (; row < end_row; row++) {
-            make_row(input, row);
-        }
-        // Make padding rows
-        end_row = row + square_padding;
-        for (; row < end_row; row++) {
-            make_padding_row(input, row);
-        }
-    }
-
-    for (; row < h; row++) {
-        make_padding_row(input, row);
-    }
-}
-
 } // end anonymous namespace
 
 int main(int argc, char **argv) {

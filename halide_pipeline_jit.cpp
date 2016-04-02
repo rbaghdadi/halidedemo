@@ -39,58 +39,10 @@ std::default_random_engine generator(0);
 //std::uniform_real_distribution<float> distribution(BLACK, WHITE);
 std::normal_distribution<float> distribution(GREYF, 0.2f);
 
-float rndflt() {
-    return distribution(generator);
-}
-
-uint8_t rnduint8() {
-    return (uint8_t)(rndflt() * 255.0f);
-}
-
 void set_input_image_params(int width, int height) {
     w = width;
     h = height;
     square_size = (w - ((nsquares + 1) * square_padding)) / nsquares;
-}
-
-void make_padding_row(ImTy &input, int y) {
-    for (int x = 0; x < w; x++) {
-        input(x, y) = WHITE;
-    }
-}
-
-int make_square_content(ImTy &input, int x, int y) {
-    for (int i = 0; i < square_size; i++) {
-        input(x + i, y) = rnduint8();
-    }
-    return x + square_size;
-}
-
-void make_row(ImTy &input, int y) {
-    int x;
-    // Left edge padding
-    for (x = 0; x < square_padding; x++) {
-        input(x, y) = WHITE;
-    }
-
-    // Make squares
-    for (int i = 0; i < nsquares; i++) {
-        // Square contents
-        x = make_square_content(input, x, y);
-
-        // Padding after square, but not after the last one
-        if (i < nsquares - 1) {
-            int xend = x + square_padding;
-            for (; x < xend; x++) {
-                input(x, y) = WHITE;
-            }
-        }
-    }
-
-    // Right edge padding
-    for (; x < w; x++) {
-        input(x, y) = WHITE;
-    }
 }
 } // end anonymous namespace
 

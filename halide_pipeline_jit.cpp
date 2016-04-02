@@ -219,8 +219,8 @@ int main(int argc, char **argv) {
     double maxElapsed = 0;
     MPI_Reduce(&sec, &maxElapsed, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 //    const double megabytesPerSec = (input.global_width() * input.global_height() * sizeof(float)) / (maxElapsed * 1e6);
-    const double gigapixelsPerSec = (input.global_width() * input.global_height()) / (maxElapsed * 1e9);
-    const double gflopsPerSec = (input.global_width() * input.global_height() * flops_per_pixel) / (maxElapsed * 1e9);
+    const double gigapixelsPerSec = ((double)input.global_width() * (double)input.global_height()) / (maxElapsed * 1e9f);
+    const double gflopsPerSec = ((double)input.global_width() * (double)input.global_height() * (double)flops_per_pixel) / (maxElapsed * 1e9f);
     if (rank == 0) {
 	printf("\n%-20s \n\n", "Image processed.");
         printf("%d MPI ranks.\n", numranks);

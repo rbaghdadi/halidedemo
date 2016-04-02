@@ -1,4 +1,4 @@
-HALIDE_ROOT=$(error Set your Halide path)
+HALIDE_ROOT=../halide-demo/shmem
 OPENCV_LIBS=-lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_videoio
 
 HOST=$(shell hostname -s)
@@ -34,6 +34,12 @@ cpu: halide_pipeline_jit.cpp
 gpu: halide_pipeline_jit.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@ -O3 -ffast-math -Wall -I $(HALIDE_ROOT)/include $(HALIDE_ROOT)/bin/libHalide.a -lpthread -ldl -lz $(LDFLAGS) $(CUDA_LDFLAGS) $(OPENCL_LDFLAGS) $(OPENGL_LDFLAGS) -DDEMO_GPU
 
+video1: video_jit_1.cpp
+	$(CXX) $(CXXFLAGS) $< -o $@ -O3 -ffast-math -Wall -I $(HALIDE_ROOT)/include $(HALIDE_ROOT)/bin/libHalide.a -lpthread -ldl -lz $(LDFLAGS)
+
+video2: video_jit_2.cpp
+	$(CXX) $(CXXFLAGS) $< -o $@ -O3 -ffast-math -Wall -I $(HALIDE_ROOT)/include $(HALIDE_ROOT)/bin/libHalide.a -lpthread -ldl -lz $(LDFLAGS) $(CUDA_LDFLAGS) $(OPENCL_LDFLAGS) $(OPENGL_LDFLAGS)
+
 
 clean:
-	rm -rf livedemo halide_pipeline_aot.h halide_pipeline_aot.o halide_pipeline_aot distributed cpu gpu *~
+	rm -rf livedemo halide_pipeline_aot.h halide_pipeline_aot.o halide_pipeline_aot distributed cpu gpu video1 video2 *~

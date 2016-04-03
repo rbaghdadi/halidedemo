@@ -39,84 +39,11 @@ std::default_random_engine generator(0);
 //std::uniform_real_distribution<float> distribution(BLACK, WHITE);
 std::normal_distribution<float> distribution(GREYF, 0.2f);
 
-float rndflt() {
-    return distribution(generator);
-}
-
-uint8_t rnduint8() {
-    return (uint8_t)(rndflt() * 255.0f);
-}
-
 void set_input_image_params(int width, int height) {
     w = width;
     h = height;
     square_size = (w - ((nsquares + 1) * square_padding)) / nsquares;
 }
-
-void make_padding_row(ImTy &input, int y) {
-    for (int x = 0; x < w; x++) {
-        input(x, y) = WHITE;
-    }
-}
-
-int make_square_content(ImTy &input, int x, int y) {
-    for (int i = 0; i < square_size; i++) {
-        input(x + i, y) = rnduint8();
-    }
-    return x + square_size;
-}
-
-void make_row(ImTy &input, int y) {
-    int x;
-    // Left edge padding
-    for (x = 0; x < square_padding; x++) {
-        input(x, y) = WHITE;
-    }
-
-    // Make squares
-    for (int i = 0; i < nsquares; i++) {
-        // Square contents
-        x = make_square_content(input, x, y);
-
-        // Padding after square, but not after the last one
-        if (i < nsquares - 1) {
-            int xend = x + square_padding;
-            for (; x < xend; x++) {
-                input(x, y) = WHITE;
-            }
-        }
-    }
-
-    // Right edge padding
-    for (; x < w; x++) {
-        input(x, y) = WHITE;
-    }
-}
-
-void make_input_image(ImTy &input) {
-    int row = 0;
-    for (row = 0; row < square_padding; row++) {
-        make_padding_row(input, row);
-    }
-
-    for (int i = 0; i < nsquares; i++) {
-        int end_row = row + square_size;
-        // Make content rows
-        for (; row < end_row; row++) {
-            make_row(input, row);
-        }
-        // Make padding rows
-        end_row = row + square_padding;
-        for (; row < end_row; row++) {
-            make_padding_row(input, row);
-        }
-    }
-
-    for (; row < h; row++) {
-        make_padding_row(input, row);
-    }
-}
-
 } // end anonymous namespace
 
 int main(int argc, char **argv) {
@@ -292,8 +219,8 @@ int main(int argc, char **argv) {
     double maxElapsed = 0;
     MPI_Reduce(&sec, &maxElapsed, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 //    const double megabytesPerSec = (input.global_width() * input.global_height() * sizeof(float)) / (maxElapsed * 1e6);
-    const double gigapixelsPerSec = (input.global_width() * input.global_height()) / (maxElapsed * 1e9);
-    const double gflopsPerSec = (input.global_width() * input.global_height() * flops_per_pixel) / (maxElapsed * 1e9);
+    const double gigapixelsPerSec = ((double)input.global_width() * (double)input.global_height()) / (maxElapsed * 1e9f);
+    const double gflopsPerSec = ((double)input.global_width() * (double)input.global_height() * (double)flops_per_pixel) / (maxElapsed * 1e9f);
     if (rank == 0) {
 	printf("\n%-20s \n\n", "Image processed.");
         printf("%d MPI ranks.\n", numranks);

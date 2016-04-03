@@ -1,3 +1,3 @@
 make -B gpu
-./gpu 1280 800
+./gpu 15000 15000
 echo

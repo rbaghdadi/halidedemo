@@ -1,3 +1,13 @@
 - To compile the codes, you need to set the path to halide root directory.
 - The scripts ./demo_live.sh, ./demo_gpu.sh and ./demo_cori.sh should compile
 the codes and run the demo program with the appropriate input data.
+
+Running on NERSC
+----------------
+- To compile and run on NERSC Edison, you need to execute "source
+  env-edison.sh" first.
+
+- The "run-edison.sbatch" Slurm script should be edited during demo time to
+  have the correct account number (-A option) and reservation name
+  (--reservation option).
+

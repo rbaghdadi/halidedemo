@@ -1,8 +1,5 @@
 - To compile the codes, you need to set the path to halide root directory.
+- To compile the demo and run it on NERSC Edison, you need to execute "source
+  env-edison.sh" first.
 - The scripts ./demo_live.sh, ./demo_gpu.sh and ./demo_dist.sh should compile
 the codes and run the demo program with the appropriate input data.
-
-Running on NERSC
-----------------
-- To compile and run on NERSC Edison, you need to execute "source
-  env-edison.sh" first.

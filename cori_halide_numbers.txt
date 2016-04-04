@@ -1,0 +1,19 @@
+32 MPI ranks.
+Elapsed:             14.597 seconds
+Agg. Throughput:     17.127021 GP/sec
+Agg. Throughput:     1404.416 gflops/sec
+
+64 MPI ranks.
+Elapsed:             7.902 seconds
+Agg. Throughput:     31.639000 GP/sec
+Agg. Throughput:     2594.398 gflops/sec
+
+128 MPI ranks.
+Elapsed:             5.313 seconds
+Agg. Throughput:     47.058009 GP/sec
+Agg. Throughput:     3858.757 gflops/sec
+
+256 MPI ranks.
+Elapsed:             3.802 seconds
+Agg. Throughput:     65.755604 GP/sec
+Agg. Throughput:     5391.960 gflops/sec

@@ -1,4 +1,4 @@
-make -B distributed
+#make -B distributed
 
 # Run the distributed job
 
@@ -8,8 +8,7 @@ export HL_JIT_TARGET=host
 export CRAYPE_LINK_TYPE=dynamic
 
 # Run with 24 threads per node.
-srun -p debug -t 00:02:00 -N 1 -n 1 -c 24 ./distributed 10000 10000
+srun -p debug -t 00:00:30 -N 128 -n 128 -c 24 ./distributed 500000 500000
 
 # UNCOMMENT DURING DEMO TIME ONLY:
-# srun -p regular -t 00:02:00 -N 1 -n 1 -c 24 -A m2534 --reservation=my_reservation_name ./distributed 10000 10000
-
+# srun -p regular -t 00:01:00 -N 128 -n 128 -c 24 -A m2534 --reservation=my_reservation_name ./distributed 500000 500000

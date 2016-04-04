@@ -1,4 +1,4 @@
-HALIDE_ROOT=$(error Set your Halide path)
+HALIDE_ROOT=/afs/csail.mit.edu/u/b/baghdadi/src/MIT/halide/halide_src
 #Macbook: /Users/b/Documents/src/MIT/halide/halide_src
 #Salike: /afs/csail.mit.edu/u/b/baghdadi/src/MIT/halide/halide_src
 #Cori: /global/homes/b/baghdadi/src/MIT/halide/distributed-halide

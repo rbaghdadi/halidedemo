@@ -1,4 +1,4 @@
-make -B distributed
+#make -B distributed
 
 # Run the distributed job
 

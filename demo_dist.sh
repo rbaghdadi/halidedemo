@@ -12,4 +12,3 @@ srun -p debug -t 00:00:30 -N 128 -n 128 -c 24 ./distributed 500000 500000
 
 # UNCOMMENT DURING DEMO TIME ONLY:
 # srun -p regular -t 00:01:00 -N 128 -n 128 -c 24 -A m2534 --reservation=my_reservation_name ./distributed 500000 500000
-

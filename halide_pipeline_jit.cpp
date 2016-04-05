@@ -129,13 +129,15 @@ int main(int argc, char **argv) {
     // Normalize
     Func bilateral_grid("bilateral_grid");
     bilateral_grid(x, y) = interpolated(x, y, 0)/interpolated(x, y, 1);
+    Func gamma;
+    gamma(x,y) = pow(bilateral_grid(x, y), 1.5f);
 
     Func clamped_bilateral_grid;
 #ifdef DEMO_DISTRIBUTED
-    clamped_bilateral_grid(x, y) = bilateral_grid(clamp(x, 0, input.global_width() - 1),
+    clamped_bilateral_grid(x, y) = gamma(clamp(x, 0, input.global_width() - 1),
                                                   clamp(y, 0, input.global_height() - 1));
 #else
-    clamped_bilateral_grid(x, y) = bilateral_grid(clamp(x, 0, input.width() - 1),
+    clamped_bilateral_grid(x, y) = gamma(clamp(x, 0, input.width() - 1),
                                                   clamp(y, 0, input.height() - 1));
 #endif
 
@@ -150,6 +152,7 @@ int main(int argc, char **argv) {
     sobel(x, y) = cast<uint8_t>((sqrt(sobelx(x, y) * sobelx(x, y) + sobely(x, y) * sobely(x, y))) * 255);
 
     Target target = get_jit_target_from_environment();
+    target.set_feature(Target::AVX2);
     if (schedule == GPU) {
         target.set_feature(Target::OpenCL);
         blurz.compute_root().reorder(c, z, x, y).gpu_tile(x, y, 8, 8);
@@ -213,7 +216,7 @@ int main(int argc, char **argv) {
     }
 
     // Empirically, this is a a decent approximation.
-    const long long flops_per_pixel = 82;
+    const long long flops_per_pixel = 405;
 
 #ifdef DEMO_DISTRIBUTED
     double maxElapsed = 0;

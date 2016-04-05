@@ -53,7 +53,9 @@ int main(int argc, char **argv) {
 
     // Normalize
     bilateral_grid(x, y) = ((interpolated(x, y, 0)/interpolated(x, y, 1)));
-    cbilateral_grid(x,y) = bilateral_grid(clamp(x, 0, cols-1), clamp(y, 0, rows-1));
+    Func gamma;
+    gamma(x,y) = pow(bilateral_grid(x, y), 1.5f);
+    cbilateral_grid(x,y) = gamma(clamp(x, 0, cols-1), clamp(y, 0, rows-1));
 
     sobelx(x, y) = -1*cbilateral_grid(x-1, y-1) + cbilateral_grid(x+1, y-1) +
         -2*cbilateral_grid(x-1, y) + 2*cbilateral_grid(x+1, y) +

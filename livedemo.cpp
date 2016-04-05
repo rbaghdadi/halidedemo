@@ -63,7 +63,7 @@ int main(int, char**)
 	clock_t end = clock();
 #endif
 
-	const long long num_floating_operations = 82*frame.rows*frame.cols;
+	const long long num_floating_operations = 405*frame.rows*frame.cols;
 	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 	double flop_per_sec = num_floating_operations/elapsed_secs;
 
